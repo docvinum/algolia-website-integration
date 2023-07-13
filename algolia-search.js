@@ -197,7 +197,7 @@ searchInstance.addWidgets([
 		showMoreLimit: 20,
 		searchable: true,
 		searchablePlaceholder: 'Search for Keywords',
-		sortBy: ['name:asc'],
+		// sortBy: ['name:asc'],
 		operator: 'or',
 	}),
 	
