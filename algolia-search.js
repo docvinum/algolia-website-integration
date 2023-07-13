@@ -1,15 +1,13 @@
 /* global instantsearch algoliasearch */
 
-//IVES
+// Initialization of search instances for different Algolia indices
 const searchpfi = instantsearch({
   indexName: 'python_final_index',
   searchClient: algoliasearch(
 	'index', 'apiKey'
   ),
-
 });
 
-//ICS
 const searchics = instantsearch({
   indexName: 'conference-series',
   searchClient: algoliasearch(
@@ -17,8 +15,8 @@ const searchics = instantsearch({
   ),
 });
 
+// Determine current page and set search instance accordingly
 const currentPage = window.location.pathname;
-
 let searchInstance;
 if (currentPage.includes('/ives-conference-series/search-a-document-ics/')) {
     searchInstance = searchics;
@@ -26,11 +24,12 @@ if (currentPage.includes('/ives-conference-series/search-a-document-ics/')) {
     searchInstance = searchpfi;
 }
 
+// Function to render search box
 const renderSearchBox = (renderOptions, isFirstRender) => {
   const { query, refine, clear, isSearchStalled, widgetParams } = renderOptions;
-
+  // Only runs once on initial render
   if (isFirstRender) {
-	  
+    // Create search box elements and attach event listeners
 	const divWBord = document.createElement('div');
     	divWBord.classList.add("et_pb_with_border");
 	divWBord.classList.add("et_pb_search_0");
@@ -39,16 +38,15 @@ const renderSearchBox = (renderOptions, isFirstRender) => {
 	divWBord.classList.add("et_pb_bg_layout_light");
 	divWBord.classList.add("et_pb_search");      
 	
-	
     const input = document.createElement('input');
     	input.classList.add("et_pb_s");
 	input.classList.add("form-control");	
 	divWBord.appendChild(input);  
 
-        
     input.addEventListener('input', event => {
       	refine(event.target.value);
     });
+     // Update search box value on subsequent renders
     if(widgetParams.container != null){
       widgetParams.container.appendChild(divWBord); 
     }
@@ -60,20 +58,17 @@ if(widgetParams.container != null){
 } 
 };
 
-// create custom widget
+// Create and instantiate custom search box widget
 const customSearchBox = instantsearch.connectors.connectSearchBox(
   renderSearchBox
 );
 
-// instantiate custom widget
-// IVES
+// Setup refinement list panels for different attributes
 searchInstance.addWidgets([
   customSearchBox({
     container: document.querySelector('#searchbox'),
   })
 ]);
-
-//ICS
 searchInstance.addWidgets([
   customSearchBox({
     container: document.querySelector('#searchboxics'),
@@ -103,12 +98,6 @@ const rLWithKeywords = instantsearch.widgets.panel({
   templates: { header: 'Keywords',},
 })(instantsearch.widgets.refinementList);
 
-/*
-const rLWithCategory = instantsearch.widgets.panel({
-  templates: { header: 'Category',},
-})(instantsearch.widgets.refinementList);
-*/
-
 const rLWithType = instantsearch.widgets.panel({
  hidden(options) {
     const facetValues = options.results.getFacetValues('type');
@@ -117,11 +106,9 @@ const rLWithType = instantsearch.widgets.panel({
   templates: { header: 'Document Type',},
 })(instantsearch.widgets.refinementList);
 
-
- 
-//IVES
+// Add widgets to search instance
 searchInstance.addWidgets([  
-  
+  // Configure, Hits, Clear Refinements, Current Refinements, Refinement Lists, Stats, Pagination widgets
   instantsearch.widgets.configure({
 	hitsPerPage: 9,
   }),
@@ -141,7 +128,6 @@ searchInstance.addWidgets([
 				baseDomain = item.url;
 			}
  			
-			
 			let tmpl = `
 			<article class="ais_et_pb_post clearfix"><h2 class="entry-title"><a href="${baseDomain}">${item.title}</a></h2>
 				<p class="post-meta">
@@ -399,7 +385,7 @@ searchics.addWidgets([
   }),
 ]);
 
-
+// Start search instance and setup event handlers
 function onRenderHandler() { }
 searchInstance.on('render', onRenderHandler);
 searchInstance.start();
@@ -408,24 +394,19 @@ searchInstance.on('render', () => {
   console.log(search.status === 'error' && search.error);
 });
 
-//ICS
-// searchics.on('render', onRenderHandler);
-// searchics.start();
-// searchics.on('error', () => {});
-// searchics.on('render', () => {
-  // console.log(searchics.status === 'error' && searchics.error);
-// });
-
+// Setup event handlers for filter overlay
 document.getElementById("openOverlay").onclick = function() {openOverlay()};
 document.getElementById("resetOverlay").onclick = function() {resetOverlay(true)};
 document.getElementById("aisStats").onclick = function() {resetOverlay()};
 function openOverlay() {
+   // Open filter overlay and add keyup listener
 	document.body.classList.add("filtering");
 	window.scrollTo(0,300);
 	window.addEventListener('keyup', onKeyUpAlgolia);    
 }
 
 function resetOverlay(a){
+	// Close filter overlay, remove keyup listener, and optionally clear filters
 	document.body.classList.remove("filtering");
 	window.removeEventListener('keyup', onKeyUpAlgolia);
 	if (a !== undefined) {
@@ -435,6 +416,7 @@ function resetOverlay(a){
 }
 
 function onKeyUpAlgolia(event) {
+    // Close filter overlay when 'Escape' key is pressed
     if (event.key !== 'Escape') {
       return;
     }
