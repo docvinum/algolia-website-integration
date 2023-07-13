@@ -1,0 +1,41 @@
+<div id="searchbox" style="min-height: 100%;"></div>
+<main id="main-container" class="ais-container alg-search">
+		<div class="container-wrapper">      
+			<section class="container-filters  ">
+				<div class="container-header "> 
+					<div id="clear-refinements"></div>
+					<div id="current-refinements"></div>
+				</div>
+				<div class="container-body ">        
+					<div id="ais-source" class="form-group"></div>
+					<div id="ais-year" class="form-group"></div>
+					<div id="ais-author" class="form-group" ></div>
+					<div id="ais-type" class="form-group"></div>
+					<div id="ais-keywords" class="form-group"></div>		 
+					<div id="ais-conference" class="form-group"></div>
+				</div>
+			</section>	
+			<footer class="container-filters-footer" data-layout="mobile">
+				<div class="container-filters-footer-button-wrapper">
+					<div class="ais-ClearRefinements">
+						<button id="resetOverlay" class="ais-ClearRefinements-button">Reset</button>
+					</div>
+				</div>
+				<div class="container-filters-footer-button-wrapper">
+					<button class="button button-primary" id="aisStats"></button>
+				</div>
+			</footer>			
+		</div>
+		<section class="container-results">		 
+			<div id="searchbox" class="ais-SearchBox" style="display:none;"></div>
+			<div id="hits"></div>
+			<div id="pagination"></div>
+		</section>
+	</main>
+	<aside data-layout="mobile">
+		<button class="filters-button" id="openOverlay" data-action="open-overlay">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 14">
+				<path d="M15 1H1l5.6 6.3v4.37L9.4 13V7.3z" stroke="#fff" stroke-width="1.29" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path>
+			</svg>Filters
+		</button>
+	</aside>
